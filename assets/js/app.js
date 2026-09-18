@@ -34,10 +34,17 @@
       const payload = { ...data, page: location.pathname, title: document.title, at: new Date().toISOString() };
       const msg = compose(payload);
       sessionStorage.setItem("lastLead", JSON.stringify(payload));
-      const wa = waUrl(msg);
-      if (S.whatsapp) window.open(wa, "_blank", "noopener");
-      else if (S.email) {
-        location.href = "mailto:" + S.email + "?subject=" + encodeURIComponent("Puerto Vallarta buyer inquiry") + "&body=" + encodeURIComponent(msg);
+      const inbox = S.email || "mail4diego@gmail.com";
+      const endpoint = S.formEndpoint || ("https://formsubmit.co/ajax/" + inbox);
+      try {
+        await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ ...payload, _subject: "Puerto Vallarta buyer inquiry", _template: "table" })
+        });
+      } catch (err) {
+        window.location.href = "mailto:" + inbox + "?subject=" + encodeURIComponent("Puerto Vallarta buyer inquiry") + "&body=" + encodeURIComponent(msg);
+        return;
       }
       location.href = ROOT + "thank-you/";
     });

@@ -5,7 +5,7 @@ window.SITE = {
   email: "mail4diego@gmail.com",
   phone: "+523328111448",
   whatsapp: "523328111448",
-  formEndpoint: "",
+  formEndpoint: "https://formsubmit.co/ajax/mail4diego@gmail.com",
   ga4: "",
   gtm: ""
 };
